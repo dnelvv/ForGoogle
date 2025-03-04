@@ -1,7 +1,6 @@
 package org.example.forgoogle;
 
 import org.junit.jupiter.api.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.openqa.selenium.By;
@@ -13,6 +12,7 @@ import java.time.Duration;
 
 public class MainPageTest {
     private WebDriver driver;
+    private final By searchFieldCss = By.cssSelector("#sb_form_q");
 
     @BeforeEach
     public void setUp() {
@@ -21,6 +21,7 @@ public class MainPageTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.get("https://www.bing.com/");
     }
+
     @AfterEach
     public void tearDown() {
         driver.quit();
@@ -28,13 +29,13 @@ public class MainPageTest {
 
     @Test
     public void search() {
-
         String input = "Selenium";
-        WebElement searchField = driver.findElement(By.cssSelector("#sb_form_q"));
+
+        WebElement searchField = driver.findElement(searchFieldCss);
         searchField.sendKeys(input);
         searchField.submit();
 
-        WebElement searchPageField = driver.findElement(By.cssSelector("#sb_form_q"));
-        assertEquals(input, searchPageField.getAttribute("value"));
+        WebElement searchPageField = driver.findElement(searchFieldCss);
+        assertEquals(input, searchPageField.getAttribute("value"), "Введенное значение не найдено в поле поиска");
     }
 }
