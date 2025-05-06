@@ -11,19 +11,26 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BingSearchTest {
+    private static final String SELENIUM = "Selenium";
     private WebDriver driver;
+    MainPage mainPage;
+    ResultsPage resultsPage;
 
 
     @BeforeEach
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
+
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         driver.get("https://www.bing.com/");
+        mainPage = new MainPage(driver);
+        resultsPage = new ResultsPage(driver);
     }
 
     @AfterEach
@@ -33,12 +40,9 @@ public class BingSearchTest {
 
     @Test
     public void searchResultsTest() {
-        String input = "Selenium";
-        MainPage mainSearchSecond = new MainPage(driver);
-        mainSearchSecond.sendText(input);
-
-        ResultsPage mainResultsSecond = new ResultsPage(driver);
-        mainResultsSecond.clickElement(0);
+        mainPage.sendText(SELENIUM);
+        resultsPage.clickElement(0);
+        goToLastTab();
 
         assertEquals("https://www.selenium.dev/", driver.getCurrentUrl(),
                 "Открылась не верная ссылка");
@@ -46,12 +50,13 @@ public class BingSearchTest {
 
     @Test
     public void searchFieldTest() {
-        String input = "Selenium";
-        MainPage mainSearch = new MainPage(driver);
-        mainSearch.sendText(input);
+        mainPage.sendText(SELENIUM);
+        assertEquals(SELENIUM, resultsPage.getTextFromSearchField(), "Текст не совпал");
+    }
 
-        ResultsPage mainResults = new ResultsPage(driver);
-        assertEquals(input, mainResults.getTextFromSearchField(), "Текст не совпал");
+    private void goToLastTab() {
+        List<String> tabs = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(tabs.size() - 1));
     }
 
 }

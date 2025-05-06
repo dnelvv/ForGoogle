@@ -26,12 +26,16 @@ public class ResultsPage {
 
     public void clickElement(int num) {
         new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(results.get(num)));
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.elementToBeClickable(results.get(num)))
                 .click();
         System.out.println("Нажатие на результат под номером: " + num);
     }
 
     public String getTextFromSearchField() {
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.visibilityOf(searchField));
         String searchValue = searchField.getAttribute("value");
         System.out.println("В строке поиска текст " + searchValue);
         return searchValue;
