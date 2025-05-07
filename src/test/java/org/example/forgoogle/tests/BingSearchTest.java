@@ -20,11 +20,9 @@ public class BingSearchTest {
     MainPage mainPage;
     ResultsPage resultsPage;
 
-
     @BeforeEach
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
-
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
@@ -43,7 +41,6 @@ public class BingSearchTest {
         mainPage.sendText(SELENIUM);
         resultsPage.clickElement(0);
         goToLastTab();
-
         assertEquals("https://www.selenium.dev/", driver.getCurrentUrl(),
                 "Открылась не верная ссылка");
     }
@@ -58,5 +55,4 @@ public class BingSearchTest {
         List<String> tabs = new ArrayList<>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(tabs.size() - 1));
     }
-
 }

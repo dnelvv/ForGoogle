@@ -17,11 +17,10 @@ public class MainPage {
         searchField.sendKeys(text);
         searchField.submit();
         System.out.println("Введен текст: " + text);
-
     }
 
-    public MainPage (WebDriver driver) {
+    public MainPage(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver,this);
+        PageFactory.initElements(driver, this);
     }
 }
